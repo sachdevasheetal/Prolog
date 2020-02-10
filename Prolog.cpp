@@ -54,7 +54,6 @@ void add_to_stack(stack<node*> &store,string s)
 
 }
 int isConstant(vector<string> &args) {
-	//vector<string> args=p.arguments;
 	int s=args.size();
 		for (int i = 0; i <s; i++) {
 			
@@ -291,7 +290,6 @@ void convert_to_CNF(vector<string> str,node* &tree,vector<vector<sentence> > &kb
 		add_to_stack(final_exp,store.top());
 		store.pop();
 	}
-	//cout<<"checking"<<endl;
 	tree=final_exp.top();
 	if (tree->data == "=>") {
 		
@@ -330,17 +328,14 @@ void convert_to_CNF(vector<string> str,node* &tree,vector<vector<sentence> > &kb
 			ret.push_back(push);
 		}
 	}
-	//map<string,map<vector<string>,map<bool,int> > > mp;
 	map< pair<string,pair<vector<string>,bool > > ,int> mp;
 	for(int i=0;i<ret.size();i++)
 	{
 		vector<sentence> push=ret[i];
 		vector<sentence> push_final;
 		int len=ret[i].size();
-		//vector<int> store_rem;
 		for(int j=0;j<len;j++)
 		{
-			//cout<<" "<<push[j].name<<" ";
 			if(mp[{push[j].name,{push[j].arguments,push[j].neg}}]==1)
 			{
 				//store_rem.push_back(j);
@@ -357,8 +352,6 @@ void convert_to_CNF(vector<string> str,node* &tree,vector<vector<sentence> > &kb
 void find_match(sentence &p,vector<pair<int,int> > &lit,
 	vector<pair<int,int> > &sent)
 {
-	//vector<pair<int,int> > lit;
-	//vector<pair<int,int> > sent;
 	if(p.neg==false)
 	{
 		lit=positive_literal_copy[p.name];
@@ -378,7 +371,6 @@ void substitute(vector<string>  &x,map<string, string> &theta) {
 				x[i] = theta[x[i]];
 				i++;
 		}
-		//return x;
 }
 bool ask(string sent) {
 	kb_copy=kb;	
@@ -404,14 +396,11 @@ bool ask(string sent) {
 		{
 			sentence s=kb_copy[i][0];
 			vector<string> str=s.arguments;
-		//	sort(str.begin(),str.end());
-			//s.arguments=str;
 			mp_store[{s.name,str}]=s.neg;
 		}
 	}
 	list<vector<sentence> > que;
 	que.push_back(ans);
-	//queue<sentence> Frontier;
 	map< vector< pair<string,pair<int,vector<string> > > > ,int> LoopDetector;
 	
 	double timeStart = clock();
@@ -425,26 +414,6 @@ bool ask(string sent) {
 	sort(p.begin(),p.end());
 	LoopDetector[p]=1;
 		while (!que.empty()) {
-			//Choose shallowest node from frontier
-		//	sentence currentSentence = Frontier.front();
-	/*	list<vector<sentence> > :: iterator it;
-		cout<<"predicates "<<endl;
-		for(it=que.begin();it!=que.end();it++)
-		{
-			vector<sentence> obj=*it;
-			cout<<endl;
-			for(int d=0;d<obj.size();d++)
-			{
-				cout<<obj[d].name<<"(";
-				for(int b=0;b<obj[d].arguments.size();b++)
-				cout<<obj[d].arguments[b]<<",";
-				cout<<")";
-				//cout<<endl;	
-			}
-			
-			//cout<<endl;
-		}
-		cout<<"predicates end "<<endl;*/
 		vector<sentence> ans1=que.front();
 		que.pop_front();
 		int len=ans1.size();
@@ -460,13 +429,10 @@ bool ask(string sent) {
 			//cout<<"match ";
 			for(int j=0;j<lit.size();j++)
 			{
-				
-			//	cout<<"lit"<<lit[j].first<<" ";
 				res.push_back(lit[j]);
 			}
 			for(int j=0;j<sent.size();j++)
 			{
-				//cout<<sent[j].second<<" ";
 				res.push_back(sent[j]);
 			}
 			for(int j=0;j<res.size();j++)
@@ -474,7 +440,6 @@ bool ask(string sent) {
 				map<string,string> uni;
 				if(kb_copy[res[j].first][res[j].second].name==store_copy.name&&kb_copy[res[j].first][res[j].second].neg!=store_copy.neg)
 				{
-					//cout<<"unify "<<store.name<<endl;
 					vector<string> arg_1=store_copy.arguments;
 					vector<string> arg_2=kb_copy[res[j].first][res[j].second].arguments;
 					int flag=1;
@@ -503,7 +468,7 @@ bool ask(string sent) {
 							}
 							
 							}
-							//flag=1;
+							
 						}
 					}
 					else
@@ -521,14 +486,10 @@ bool ask(string sent) {
 							vector<sentence> resolvent;
 							
 							map< pair<string,pair<vector<string>,bool> >,int > mp1;
-						//	map< pair <pair <string,int>,vector<string> >  ,int> mp1;
 							for(int p=0;p<sent1.size();p++)
 							{
-							//	cout<<" "<<push[j].name<<" ";
 								if(mp1[{sent1[p].name,{sent1[p].arguments,sent1[p].neg}}]==1)
 								{
-									//store_rem.push_back(j);
-									//cout<<"repeat ";
 								}
 								else
 								{
@@ -538,11 +499,8 @@ bool ask(string sent) {
 							}
 							for(int p=0;p<sent2.size();p++)
 							{
-							//	cout<<" "<<push[j].name<<" ";
 								if(mp1[{sent2[p].name,{sent2[p].arguments,sent2[p].neg}}]==1)
 								{
-									//store_rem.push_back(j);
-									//cout<<"reper ";
 								}
 								else
 								{
@@ -551,8 +509,7 @@ bool ask(string sent) {
 								}
 							}	
 							//If resolvent is empty then alpha is true
-							if (resolvent.empty()) {
-								//cout<<"hello"<<endl;								
+							if (resolvent.empty()) {							
 								store_in_kb(ans2);
 								return true;
 							}
@@ -560,8 +517,6 @@ bool ask(string sent) {
 							{
 								sentence res=resolvent[0];
 								vector<string> str=res.arguments;
-								//sort(str.begin(),str.end());
-								//res.arguments=str;
 								if(mp_store.find({res.name,str})!=mp_store.end())
 								{
 									if(res.neg!=mp_store[{res.name,str}])
@@ -587,7 +542,6 @@ bool ask(string sent) {
 							{
 								store_in_kb_copy(resolvent);
 								que.push_back(resolvent);
-								//cout<<"unify loop"<<que.size()<<endl;
 								LoopDetector[p]=1;
 							}
 					}
@@ -618,7 +572,6 @@ int main()
 		getline(cin,str);
 		query_sentences.push_back(str);
 	}
-	//fflush(stdin);
 	
 	int kb_count;
 	cin>>kb_count;
@@ -629,7 +582,6 @@ int main()
 		getline(cin,str);
 		store.push_back(str);
 	}
-//	FILE* fp=freopen("output.txt", "w", stdout);
 	vector<vector<string> > final_kb;
 	for(int i=0;i<store.size();i++)
 	{
@@ -644,46 +596,25 @@ int main()
 		final_kb.push_back(kb_sentences);
 	}
 	int a=final_kb.size();
-	//cout<<a<<endl;
 	node* root;
 	vector<vector<sentence> > kb1;
 	for(int i=0;i<a;i++)
 	{
 		int l=final_kb[i].size();
-		//cout<<final_kb[i][0]<<endl;
 		convert_to_CNF(final_kb[i],root,kb1);	
 		int s=kb1.size();
-		//cout<<endl<<s<<endl;
 	}
 	int s=kb1.size();
 	for(int i=0;i<s;i++)
 	{
 			store_in_kb(kb1[i]);
 	}
-	//cout<<endl<<"kb that we have got"<<endl;
-//	cout<<kb.size();
-		/*for(int i=0;i<kb.size();i++)
-		{
-			for(int j=0;j<kb[i].size();j++)
-			{
-				cout<<kb[i][j].neg<<" "<<kb[i][j].name;
-				int l=kb[i][j].arguments.size();
-				cout<<"(";
-				for(int k=0;k<l;k++)
-				{
-					cout<<kb[i][j].arguments[k]<<" ";
-				}
-				cout<<")";
-			}
-			cout<<endl;
-		}*/
 		vector<bool> prit;
 	for(int i=0;i<queries_count;i++)
 	{
 		bool res=ask(query_sentences[i]);
 		prit.push_back(res);
 	}
-//	cout<<endl;
 
 	FILE* fp=freopen("output.txt", "w", stdout);
 	for(int i=0;i<prit.size();i++)
